@@ -24,27 +24,27 @@ if (email === config.admin.EMAIL && password === config.admin.PASSWORD) {
     userType = "admin";
     userFound = { _id: "admin" };
 } else {
- //Buscar primero en la coleccion de empleados 
+ // Buscar primero en la colección de empleados
  userFound = await employeesModel.findOne({ email });
  if (userFound) {
-    userType = "employee";
-    // Comparar las contraseñas de manera correcta (esperar el resultado de la comparación)
-    const isPasswordCorrect = await bcrypt.compare(password, userFound.password);
-    if (!isPasswordCorrect) {
-      return res.json({ message: "Contraseña incorrecta" });
-    }
-} else {
-    // Si no es un empleado, buscar en la colección de clientes
-    userFound = await clientsModel.findOne({ email });
-    if (userFound) {
-      userType = "Client";
-      // Comparar las contraseñas de manera correcta (esperar el resultado de la comparación)
-      const isPasswordCorrect = await bcrypt.compare(password, userFound.password);
-      if (!isPasswordCorrect) {
-        return res.status(401).json({ message: "Invalid password" });
-      }
-    }
-  }
+   userType = "Employee";
+   // Comparar las contraseñas de manera correcta (esperar el resultado de la comparación)
+   const isMatch = await bcrypt.compare(password, userFound.password);
+   if (!isMatch) {
+     return res.status(401).json({ message: "Invalid password" });
+   }
+ } else {
+   // Si no es un empleado, buscar en la colección de clientes
+   userFound = await clientsModel.findOne({ email });
+   if (userFound) {
+     userType = "client";
+     // Comparar las contraseñas de manera correcta (esperar el resultado de la comparación)
+     const isMatch = await bcrypt.compare(password, userFound.password);
+     if (!isMatch) {
+       return res.status(401).json({ message: "Invalid password" });
+     }
+   }
+ }
 }
 
 // Si no se encuentra el usuario en ninguna colección (ni cliente ni empleado), devolver error
@@ -67,13 +67,13 @@ JWT.sign(
     },
     (error, token) => {
       if (error) {
-        console.error("Error al generar el token:", error);
+        console.error(error);
         return res.json({ message: "Error al generar el token" });
       }
 
     // Guardar el token en una cookie
       res.cookie("authToken", token, {httpOnly: true });
-      res.json({ message: "Inicio de sesión exitoso" });
+      res.json({ message: `${userType} login successful`, token });
     }
   );
 } catch (error) {
@@ -82,3 +82,5 @@ JWT.sign(
 };
 
 export default loginController;
+
+
