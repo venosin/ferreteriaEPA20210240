@@ -39,7 +39,7 @@ passwordRecoveryController.requestCode = async (req, res) => {
     const token = jwt.sign(
       { email, code, userType, verified: false },
       config.JWT.SECRET,
-      { expiresIn: "15mn" }
+      { expiresIn: "15m" }
     );
 
     //Guardar el token en una cookie
@@ -95,7 +95,7 @@ passwordRecoveryController.verifyCode = (req, res) => {
       const newToken = jwt.sign(
         { email: decoded.email, code: decoded.code, userType: decoded.userType, verified: true },
         config.JWT.SECRET,
-        { expiresIn: "15mn" }
+        { expiresIn: "15m" }
       );
 
       // Remplazar el token en la cookie con el nuevo token(marcado como verificado)

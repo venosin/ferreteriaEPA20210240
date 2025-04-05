@@ -9,6 +9,7 @@ import registerEmployeeRoutes from "./src/routes/registerEmployee.js"
 import registerClientRoutes from "./src/routes/registerClient.js"
 import loginRoutes from "./src/routes/login.js"
 import logoutRoutes from "./src/routes/logout.js"
+import passwordRecoveryRoutes from "./src/routes/passwordRecovery.js"
 import cookieParser from "cookie-parser";
 
 
@@ -32,9 +33,10 @@ app.use("/api/reviews", reviewsRoutes);
 app.use("/api/logout", logoutRoutes);
 
 // Rutas publicas que no necesitan haber iniciado sesión
+app.use("/api/login", loginRoutes);
 app.use("/api/registerEmployee", registerEmployeeRoutes);
 app.use("/api/registerClient", registerClientRoutes);
-app.use("/api/login", loginRoutes);
+app.use("/api/passwordRecovery", passwordRecoveryRoutes);
 
 
 //Archivo la constante para poder usar express en otros archivos
