@@ -146,7 +146,35 @@ registerClientController.verifyCodeEmail = async (req, res) => {
     // Limpiar la cookie despuesd de la verificacion
     res.clearCookie("verificationToken");
 
-    res.status(200).json({ message: "Email verified successfully" });
+    // Generar automáticamente el token de autenticación (login)
+    jwt.sign(
+      {
+        id: client._id,
+        userType: "client",
+      },
+      config.JWT.SECRET,
+      {
+        expiresIn: config.JWT.EXPIRES,
+      },
+      (error, authToken) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({ message: "Error al generar el token de autenticación" });
+        }
+
+        // Guardar el token en una cookie
+        res.cookie("authToken", authToken, { 
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production"
+        });
+        
+        // Responder con éxito e incluir el token
+        res.status(200).json({ 
+          message: "Email verified successfully. You are now logged in", 
+          token: authToken 
+        });
+      }
+    );
   } catch (error) {
     res
       .status(500)
