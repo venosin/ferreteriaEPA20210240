@@ -13,7 +13,7 @@ import passwordRecoveryRoutes from "./src/routes/passwordRecovery.js"
 import cookieParser from "cookie-parser";
 import providersRoutes from "./src/routes/providers.js";
 import { validateAuthToken } from "./src/middlewares/validateAuthToken.js";
-
+import cors from "cors";
 //Creso la constante para poder usar express en otros archivos
 const app = express();
 
@@ -24,19 +24,24 @@ app.use(express.json());
 //Para que POSTMAN guarde el token en una cookie
 app.use(cookieParser());
 
+//Middleware para cors
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 
 //Mandae a llamar a rutas
 app.use("/api/products", productsRoutes);
 app.use("/api/clients", clientsRoutes);
-app.use("/api/employees", validateAuthToken(["Employee", "Admin"]), employeesRoutes);
+app.use("/api/employees", /*validateAuthToken(["Employee", "Admin"]),*/ employeesRoutes);
 app.use("/api/branches", branchesRoutes);
 app.use("/api/reviews", reviewsRoutes);
-app.use("/api/providers", validateAuthToken(["Employee", "Admin"]), providersRoutes);
+app.use("/api/providers", /*validateAuthToken(["Employee", "Admin"]),*/ providersRoutes);
 app.use("/api/logout", logoutRoutes);
 
 // Rutas publicas que no necesitan haber iniciado sesión
 app.use("/api/login", loginRoutes);
-app.use("/api/registerEmployee", validateAuthToken(["Admin"]), registerEmployeeRoutes);
+app.use("/api/registerEmployee", /*validateAuthToken(["Admin"]), */ registerEmployeeRoutes);
 app.use("/api/registerClient", registerClientRoutes);
 app.use("/api/passwordRecovery", passwordRecoveryRoutes);
 
