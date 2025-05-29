@@ -1,4 +1,4 @@
-// Aqui en el controlador iran todos los metodos 
+// Aqui en el controlador iran todos los metodos
 
 // Aquí en el controlador irán todos los métodos (CRUD)
 
@@ -8,44 +8,90 @@ import employeesModel from "../models/Employees.js";
 
 // SELECT
 employeesController.getEmployees = async (req, res) => {
-    const employees = await employeesModel.find();
-    res.json(employees);
+  const employees = await employeesModel.find();
+  res.json(employees);
 };
 
-// INSERT 
+// INSERT
 employeesController.createEmployee = async (req, res) => {
-    const { name, lastName, birthday, email, address, hireDate, password, telephone, dui, isssNumber, isVerified } = req.body;
-    const newEmployee = new employeesModel({ name, lastName, birthday, email, address, hireDate, password, telephone, dui, isssNumber, isVerified });
-    await newEmployee.save();
-    res.json({ message: "Empleado creado con éxito" });
+  const {
+    name,
+    lastName,
+    birthday,
+    email,
+    address,
+    hireDate,
+    password,
+    telephone,
+    dui,
+    isssNumber,
+    isVerified,
+  } = req.body;
+  const newEmployee = new employeesModel({
+    name,
+    lastName,
+    birthday,
+    email,
+    address,
+    hireDate,
+    password,
+    telephone,
+    dui,
+    isssNumber,
+    isVerified,
+  });
+  await newEmployee.save();
+  res.json({ message: "Empleado creado con éxito" });
 };
 
 // DELETE
 employeesController.deleteEmployee = async (req, res) => {
-    await employeesModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Empleado eliminado" });
+  await employeesModel.findByIdAndDelete(req.params.id);
+  res.json({ message: "Empleado eliminado" });
 };
 
 // UPDATE
 employeesController.updateEmployee = async (req, res) => {
-    const { name, lastName, birthday, email, address, hireDate, password, telephone, dui, isssNumber, isVerified } = req.body;
-    await employeesModel.findByIdAndUpdate(
-        req.params.id,
-        { name, lastName, birthday, email, address, hireDate, password, telephone, dui, isssNumber, isVerified },
-        { new: true }
-    );
-    res.json({ message: "Empleado actualizado" });
+  const {
+    name,
+    lastName,
+    birthday,
+    email,
+    address,
+    hireDate,
+    password,
+    telephone,
+    dui,
+    isssNumber,
+    isVerified,
+  } = req.body;
+  await employeesModel.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      lastName,
+      birthday,
+      email,
+      address,
+      hireDate,
+      password,
+      telephone,
+      dui,
+      isssNumber,
+      isVerified,
+    },
+    { new: true }
+  );
+  res.json({ message: "Empleado actualizado" });
 };
 
 // SELECT EMPLOYEE BY ID
 employeesController.getEmployee = async (req, res) => {
-    const employee = await employeesModel.findById(req.params.id);
-    res.json(employee);
+  const employee = await employeesModel.findById(req.params.id);
+  res.json(employee);
 };
 
 export default employeesController;
-
-
 
 // export const getEmployees = async (req, res) => {
 //     try {
