@@ -26,7 +26,7 @@ app.use(cookieParser());
 
 //Middleware para cors
 app.use(cors({
-    origin: ["ferreteria-epa-20210240.vercel.app", "http://localhost:5173",],
+    origin: ["https://ferreteria-epa-20210240.vercel.app", "http://localhost:5173"],
     credentials: true,
 }));
 
