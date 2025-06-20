@@ -13,6 +13,7 @@ import passwordRecoveryRoutes from "./src/routes/passwordRecovery.js"
 import cookieParser from "cookie-parser";
 import providersRoutes from "./src/routes/providers.js";
 import faqsRoutes from "./src/routes/faqs.js";
+import salesRoutes from "./src/routes/sales.js";
 import { validateAuthToken } from "./src/middlewares/validateAuthToken.js";
 import cors from "cors";
 //Creso la constante para poder usar express en otros archivos
@@ -39,6 +40,7 @@ app.use("/api/branches", branchesRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/providers", /*validateAuthToken(["Employee", "Admin"]),*/ providersRoutes);
 app.use("/api/faqs", faqsRoutes);
+app.use("/api/sales", salesRoutes);
 app.use("/api/logout", logoutRoutes);
 
 // Rutas publicas que no necesitan haber iniciado sesión
